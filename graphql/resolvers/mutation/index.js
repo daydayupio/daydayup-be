@@ -1,3 +1,5 @@
 module.exports = {
-  login: require('./login')
+  register: require('./register'),
+  login: require('./login'),
+  updateProfile: require('./updateProfile'),
 }

@@ -1,16 +1,15 @@
 
 const ORM = require('./orm')
-const { query } = require('../database')
+const pw = require('../util/password')
+// const { query } = require('../database')
 
 class UserModel extends ORM {
-  static async findById(id) {
-    return await query(`SELECT * FROM ${this.tableName} WHERE id = ${id}`)
+  static async validate({ name, password }) {
+    const { results } = await this.find({ name, password: pw.encrypt(password) })
+    return results[0]
   }
-  static async findByName(name) {
-    return await query(`SELECT * FROM ${this.tableName} WHERE name = '${name}'`)
-  }
-  static async find(conditions) {
-    return await this.findByCondition(conditions)
+  static encryptPassword(password) {
+    return pw.encrypt(password)
   }
 }
 

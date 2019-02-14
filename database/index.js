@@ -31,12 +31,12 @@ const conn = initializeConnection()
 module.exports = {
   conn,
   query(...args) {
-    const rst = new Promise(resolve => {
+    const rst = new Promise((resolve, reject) => {
       conn.query(...args, function (error, results, fields) {
         if (error) {
-          resolve([error, null, null])
+          reject(error)
         }
-        resolve([null, results, fields])
+        resolve({ results, fields })
       })
     })
     return rst

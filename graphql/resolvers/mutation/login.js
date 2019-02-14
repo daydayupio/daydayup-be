@@ -1,16 +1,13 @@
 const logger = require('../../../util/logger')
 const jwt = require('../../../util/jwt')
+const pw = require('../../../util/password')
 const UserModel = require('../../../models/user')
 
 module.exports = async function (parent, { name, password }, context) {
-  const [err, result] = await UserModel.find({ name, password })
-  if (err) {
-    throw err
-  }
-  if (result.length === 0) {
+  const user = await UserModel.validate({ name, password })
+  if (!user) {
     throw new Error('username or password is incorrect')
   }
-  const { id } = result[0]
-  logger.debug(result[0])
-  return jwt.sign({ id })
+  const { id, name: userName } = user
+  return jwt.sign({ id, name: userName })
 }
