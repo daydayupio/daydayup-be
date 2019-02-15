@@ -9,13 +9,14 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => {
+    const operationName = req.body.operationName
     if (req.body.operationName === 'IntrospectionQuery') {
       return {}
     }
     const token = req.headers.authorization || ''
     const user = AuthController.getUserByToken(token)
     if (!user) {
-      if (process.env.NODE_ENV === 'production') {
+      if (!['login', 'register'].includes(operationName)) {
         throw new Error('not logged in')
       }
     }
