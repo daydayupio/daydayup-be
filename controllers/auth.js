@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { salt } = require('../config/jwt')
+const UserModel = require('../models/user')
 
 module.exports = class Auth {
   /**
@@ -11,10 +12,18 @@ module.exports = class Auth {
   static login(payload) {
     return jwt.sign({ name: payload.name })
   }
-  static getUserByToken(token) {
+  static async getUserByToken(token) {
     if (!token) {
       return null
     }
-    return jwt.verify(token, salt)
+    const user = jwt.verify(token, salt)
+    if (!user) {
+      return null
+    }
+    const valid = await UserModel.isTokenValid({ userId: user.id, token })
+    if (!valid) {
+      return null
+    }
+    return user
   }
 }

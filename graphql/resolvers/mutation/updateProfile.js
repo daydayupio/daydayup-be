@@ -15,5 +15,7 @@ module.exports = async function (parent, data, context) {
   const { results } = await UserModel.find({ id: userId })
   const user = results[0]
   context.user = { id: user.id, name: user.name }
-  return jwt.sign({ id: user.id, name: user.name })
+  const token = jwt.sign({ id: user.id, name: user.name })
+  await UserModel.updateToken({ userId: user.id, token })
+  return token
 }

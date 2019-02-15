@@ -1,20 +1,20 @@
 const express = require('express')
 const logger = require('./util/logger')
 const { ApolloServer } = require('apollo-server-express')
-const typeDefs = require('./graphql/typeDefs')
+const typeDefs = require('./graphql/schema')
 const resolvers = require('./graphql/resolvers')
 const AuthController = require('./controllers/auth')
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => {
+  context: async ({ req }) => {
     const operationName = req.body.operationName
     if (req.body.operationName === 'IntrospectionQuery') {
       return {}
     }
     const token = req.headers.authorization || ''
-    const user = AuthController.getUserByToken(token)
+    const user = await AuthController.getUserByToken(token)
     if (!user) {
       if (!['login', 'register'].includes(operationName)) {
         throw new Error('not logged in')

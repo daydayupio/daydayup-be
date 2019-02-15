@@ -9,5 +9,9 @@ module.exports = async function (parent, { name, password }, context) {
     throw new Error('username or password is incorrect')
   }
   const { id, name: userName } = user
-  return jwt.sign({ id, name: userName })
+  const token = jwt.sign({ id, name: userName })
+
+  await UserModel.updateToken({ userId: id, token })
+
+  return token
 }

@@ -1,4 +1,5 @@
 const UserModel = require('../../../models/user')
+const AuthorizationModel = require('../../../models/authorization')
 const jwt = require('../../../util/jwt')
 const pw = require('../../../util/password')
 const logger = require('../../../util/logger')
@@ -19,5 +20,10 @@ module.exports = async function (parent, { name, email, password }, context) {
   }
 
   // login
-  return jwt.sign({ id: user.id, name: user.name })
+  const token = jwt.sign({ id: user.id, name: user.name })
+
+  // authorization
+  AuthorizationModel.insert({ user_id: user.id, token })
+
+  return token
 }
