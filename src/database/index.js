@@ -1,5 +1,6 @@
 const mysql = require('mysql')
 const mysqlConf = require('../config/database')
+const logger = require('../util/logger')
 
 function initializeConnection() {
   function addDisconnectHandler(connection) {
@@ -31,6 +32,7 @@ const conn = initializeConnection()
 module.exports = {
   conn,
   query(...args) {
+    logger('query').debug(...args)
     const rst = new Promise((resolve, reject) => {
       conn.query(...args, function (error, results, fields) {
         if (error) {

@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "npx nodemon app.js"
+    "init:database": "node src/database/init.js",
+    "start": "npx nodemon src/app.js"
   },
   "dependencies": {
     "apollo-server-express": "^2.3.3",
