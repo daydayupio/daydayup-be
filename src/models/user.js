@@ -19,7 +19,7 @@ class UserModel extends ORM {
   static async updateToken({ userId, token }) {
     const { results } = await AuthorizationModel.find({ user_id: userId })
     if (results.length === 0) {
-      await AuthorizationModel.insert({ user_id: id, token })
+      await AuthorizationModel.insert({ user_id: userId, token })
     } else {
       const authorizationRecord = results[0]
       const authorizationId = authorizationRecord.id

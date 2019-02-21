@@ -3,6 +3,7 @@ const { gql } = require('apollo-server-express')
 module.exports = gql`
   type Query {
     users: [User]
+    profile: User
   }
 
   type User {

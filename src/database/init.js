@@ -1,4 +1,7 @@
 const { query, conn } = require('./index')
+const pw = require('../util/password')
+const escape = conn.escape.bind(conn)
+
 const roles = [
   {
     name: '超级管理员',
@@ -57,21 +60,60 @@ const subjects = [
   },
 ]
 
-function initRoles() {
-  query(`TRUNCATE TABLE roles`)
-  roles.forEach(role => {
-    query(`INSERT INTO roles (name, code) VALUES (${conn.escape(role.name)}, ${conn.escape(role.code)})`)
-  })
+const users = [
+  {
+    name: 'admin',
+    password:pw.encrypt('password'),
+    email:'admin@daydayup.com',
+    role_code:'0',
+  }
+]
+
+async function truncate(tableName) {
+  await query(`SET FOREIGN_KEY_CHECKS = 0`)
+  await query(`TRUNCATE ${tableName}`)
+  await query(`SET FOREIGN_KEY_CHECKS = 1`)
 }
 
-function initSubjects() {
-  query(`TRUNCATE TABLE subjects`)
-  subjects.forEach(subject => {
-    const datetime = new Date()
-    query(`INSERT INTO subjects (name, description, created_at, updated_at) VALUES (${conn.escape(subject.name)}, ${conn.escape(subject.description)}, ${conn.escape(datetime)}, ${conn.escape(datetime)})`)
-  })
+async function initUsers() {
+  await truncate('users')
+  return Promise.all(
+    users.map(({name, password, email, role_code}) => {
+      const datetime = new Date()
+      return query(`INSERT INTO users (name, password, email, role_code, created_at, updated_at) VALUES 
+        (${escape(name)}, ${escape(password)}, ${escape(email)}, ${escape(role_code)}, ${escape(datetime)}, ${escape(datetime)})`)
+    })
+  )
 }
 
-initRoles()
-initSubjects()
-conn.end()
+async function initRoles() {
+  await truncate('roles')
+  return Promise.all(
+    roles.map(role => {
+      return query(`INSERT INTO roles (name, code) VALUES 
+        (${escape(role.name)}, ${escape(role.code)})`)
+    })
+  )
+}
+
+async function initSubjects() {
+  await truncate('subjects')
+  const {results} = await query(`SELECT id FROM users WHERE name = 'admin'`)
+  const creator_id = results[0].id
+  return Promise.all(
+    subjects.map(subject => {
+      const datetime = new Date()
+      return query(`INSERT INTO subjects (name, description, creator_id, created_at, updated_at) VALUES 
+        (${escape(subject.name)}, ${escape(subject.description)}, ${escape(creator_id)}, ${escape(datetime)}, ${escape(datetime)})`)
+    })
+  )
+}
+
+async function init() {
+  await initRoles()
+  await initUsers()
+  await initSubjects()
+  conn.end()
+}
+
+init()

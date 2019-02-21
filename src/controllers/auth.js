@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken')
+const {ApolloError} = require('apollo-server-express')
 const { salt } = require('../config/jwt')
 const UserModel = require('../models/user')
+const ERROR_CODE = require('../config/errorCode')
 
 module.exports = class Auth {
   /**
@@ -12,11 +14,20 @@ module.exports = class Auth {
   static login(payload) {
     return jwt.sign({ name: payload.name })
   }
+  static async getUserByAuthorization(authorization) {
+    const token = authorization.split(' ')[1]
+    return await this.getUserByToken(token)
+  }
   static async getUserByToken(token) {
     if (!token) {
       return null
     }
-    const user = jwt.verify(token, salt)
+    let user
+    try {
+      user = jwt.verify(token, salt)
+    } catch (err) {
+      throw new ApolloError(err.message, ERROR_CODE.SESSION_EXPIRED)
+    }
     if (!user) {
       return null
     }
