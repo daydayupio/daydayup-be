@@ -26,7 +26,7 @@ module.exports = class Auth {
     try {
       user = jwt.verify(token, salt)
     } catch (err) {
-      throw new ApolloError(err.message, ERROR_CODE.SESSION_EXPIRED)
+      throw new ApolloError(ERROR_CODE.SESSION_EXPIRED.message, ERROR_CODE.SESSION_EXPIRED.code)
     }
     if (!user) {
       return null

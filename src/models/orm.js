@@ -6,6 +6,9 @@ module.exports = class ORM {
   static findAll() {
     return this.find()
   }
+  static query(sql) {
+    return query(sql)
+  }
   static insert(condition) {
     const date = new Date()
     const created_at = date

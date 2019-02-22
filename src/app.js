@@ -18,7 +18,7 @@ const server = new ApolloServer({
     const user = await AuthController.getUserByAuthorization(authorization)
     if (!user) {
       if (!['login', 'register'].includes(operationName)) {
-        throw new ApolloError('not logged in', ERROR_CODE.NOT_LOGIN)
+        throw new ApolloError(ERROR_CODE.NOT_LOGIN.message, ERROR_CODE.NOT_LOGIN.code)
       }
     }
     return { user }

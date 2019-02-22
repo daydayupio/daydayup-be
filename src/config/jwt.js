@@ -1,3 +1,4 @@
 module.exports = {
-  salt: 'daydayup.io'
+  salt: 'daydayup.io',
+  expiresIn: '24h',
 }

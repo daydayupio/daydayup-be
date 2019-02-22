@@ -1,7 +1,7 @@
-const { salt } = require('../config/jwt')
+const { salt, expiresIn } = require('../config/jwt')
 const jwt = require('jsonwebtoken')
 const defaultOptions = {
-  expiresIn: '2h',
+  expiresIn,
 }
 module.exports = {
   /**

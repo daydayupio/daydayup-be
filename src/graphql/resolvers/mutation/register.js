@@ -12,7 +12,7 @@ module.exports = async function (parent, { name, email, password }, context) {
   }
 
   // insert record
-  await UserModel.insert({ name, email, password: pw.encrypt(password) })
+  await UserModel.insert({ name, email, password: pw.encrypt(password), role_code:  '3'})
 
   const user = await UserModel.validate({ name, password })
   if (!user) {

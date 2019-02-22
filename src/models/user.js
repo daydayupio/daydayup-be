@@ -2,7 +2,6 @@
 const ORM = require('./orm')
 const pw = require('../util/password')
 const AuthorizationModel = require('./authorization')
-// const { query } = require('../database')
 
 class UserModel extends ORM {
   static async validate({ name, password }) {
@@ -21,9 +20,7 @@ class UserModel extends ORM {
     if (results.length === 0) {
       await AuthorizationModel.insert({ user_id: userId, token })
     } else {
-      const authorizationRecord = results[0]
-      const authorizationId = authorizationRecord.id
-      await AuthorizationModel.update({ token }, { id: authorizationId })
+      await AuthorizationModel.update({ token }, { user_id: userId })
     }
   }
 }
