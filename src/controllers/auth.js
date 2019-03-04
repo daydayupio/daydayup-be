@@ -6,8 +6,8 @@ const ERROR_CODE = require('../config/errorCode')
 
 module.exports = class Auth {
   /**
-   * 
-   * @param {object} payload 
+   *
+   * @param {object} payload
    * @param {string} payload.name
    * @param {string} payload.password
    */
