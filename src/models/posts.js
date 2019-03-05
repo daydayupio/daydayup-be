@@ -1,7 +1,7 @@
-const ORM = require('./orm')
+const ORM = require("./orm")
+const { tableName } = require("./decorator.js")
 
-class PostModel extends ORM{}
-
-PostModel.tableName = 'posts'
+@tableName("posts")
+class PostModel extends ORM {}
 
 module.exports = PostModel

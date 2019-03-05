@@ -1,7 +1,9 @@
 const ORM = require("./orm")
 const pw = require("../util/password")
 const AuthorizationModel = require("./authorization")
+const { tableName } = require("./decorator")
 
+@tableName("users")
 class UserModel extends ORM {
     static async validate({ name, password }) {
         const { results } = await this.find({
@@ -29,7 +31,5 @@ class UserModel extends ORM {
         }
     }
 }
-
-UserModel.tableName = "users"
 
 module.exports = UserModel

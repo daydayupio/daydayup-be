@@ -1,8 +1,8 @@
-const ORM = require('./orm')
+const ORM = require("./orm")
 
-class SubjectModel extends ORM {
-}
+const { tableName } = require("./decorator")
 
-SubjectModel.tableName = 'subjects'
+@tableName("subjects")
+class SubjectModel extends ORM {}
 
 module.exports = SubjectModel

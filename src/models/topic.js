@@ -1,8 +1,7 @@
 const ORM = require("./orm")
+const { tableName } = require("./decorator")
 
-class TopicModel extends ORM {
-}
-
-TopicModel.tableName = 'topics'
+@tableName("topics")
+class TopicModel extends ORM {}
 
 module.exports = TopicModel

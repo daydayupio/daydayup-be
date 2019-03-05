@@ -1,0 +1,1 @@
+{"version":3,"file":"decorator.js","sourceRoot":"","sources":["../../src/models/decorator.js"],"names":[],"mappings":"AAAA,SAAS,SAAS,CAAC,IAAI;IACnB,OAAO,UAAS,MAAM;QAClB,MAAM,CAAC,SAAS,GAAG,IAAI,CAAA;IAC3B,CAAC,CAAA;AACL,CAAC;AACD,MAAM,CAAC,OAAO,GAAG;IACb,SAAS;CACZ,CAAA"}

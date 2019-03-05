@@ -1,7 +1,3 @@
-require("babel-core").transform("code", {
-    plugins: ["transform-decorators"],
-})
-
 const express = require("express")
 const logger = require("./util/logger")
 const { ApolloServer, ApolloError } = require("apollo-server-express")
@@ -35,7 +31,7 @@ const server = new ApolloServer({
         return { user }
     },
     formatError: error => {
-        console.log(error)
+        logger().error(error)
         return error
     },
 })
