@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -6,14 +7,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const { query, conn } = require("../database");
-module.exports = class ORM {
+Object.defineProperty(exports, "__esModule", { value: true });
+const database_1 = require("../database");
+class ORM {
     /**
      * @param {object} condition
      */
     static find(condition) {
         return __awaiter(this, void 0, void 0, function* () {
-            return query(this.findSQL(condition));
+            return database_1.query(this.findSQL(condition));
         });
     }
     /**
@@ -35,12 +37,12 @@ module.exports = class ORM {
      */
     static query(sql) {
         return __awaiter(this, void 0, void 0, function* () {
-            return query(sql);
+            return database_1.query(sql);
         });
     }
     static insert(condition) {
         return __awaiter(this, void 0, void 0, function* () {
-            return query(this.insertSQL(condition));
+            return database_1.query(this.insertSQL(condition));
         });
     }
     static update(condition, whereClause) {
@@ -48,18 +50,18 @@ module.exports = class ORM {
             if (!whereClause) {
                 throw new Error("update need where clause");
             }
-            return query(this.updateSQL(condition, whereClause));
+            return database_1.query(this.updateSQL(condition, whereClause));
         });
     }
     static findSQL(condition) {
         return `SELECT * FROM ${this.tableName} WHERE ${this.whereClauseSQL(condition)}`;
     }
-    static insertSQL(condition) {
+    static insertSQL(condition = null) {
         const now = new Date();
         const conditions = Object.entries(Object.assign({}, condition, { created_at: now, updated_at: now }));
         const fieldsSQL = conditions.map(([key]) => key).join(", ");
         const valuesSQL = conditions
-            .map(([, val]) => conn.escape(val))
+            .map(([, val]) => database_1.conn.escape(val))
             .join(", ");
         return `INSERT INTO ${this.tableName} (${fieldsSQL}) VALUES (${valuesSQL})`;
     }
@@ -68,7 +70,7 @@ module.exports = class ORM {
         const conditions = Object.entries(Object.assign({}, condition, { updated_at: now }));
         const sql = conditions
             .map(([key, val]) => {
-            return `${key}=${conn.escape(val)}`;
+            return `${key}=${database_1.conn.escape(val)}`;
         })
             .join(", ");
         return `UPDATE ${this.tableName} SET ${sql} WHERE ${this.whereClauseSQL(whereClause)}`;
@@ -80,35 +82,23 @@ module.exports = class ORM {
         const conditions = Object.entries(condition);
         return conditions
             .map(([key, val]) => {
-            return `${key}=${conn.escape(val)}`;
+            return `${key}=${database_1.conn.escape(val)}`;
         })
             .join(" AND ");
     }
     constructor() {
-        this.fields = [
-            {
-                id: {
-                    type: Number,
-                },
-                created_at: {
-                    type: Date,
-                },
-                updated_at: {
-                    type: Date,
-                },
-            },
-        ];
         this.id = null;
-        this.createdAt = null;
-        this.updatedAt = null;
+        this.created_at = null;
+        this.updated_at = null;
     }
     insert() {
         return __awaiter(this, void 0, void 0, function* () {
-            return query(ORM.insertSQL());
+            return database_1.query(ORM.insertSQL());
         });
     }
     update() {
         return __awaiter(this, void 0, void 0, function* () { });
     }
-};
+}
+exports.ORM = ORM;
 //# sourceMappingURL=orm.js.map

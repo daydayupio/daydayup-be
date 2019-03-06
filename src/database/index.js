@@ -1,6 +1,6 @@
-const mysql = require("mysql")
-const mysqlConf = require("../config/database")
-const logger = require("../util/logger")
+import * as mysql from "mysql"
+import * as mysqlConf from "../config/database"
+import { logger } from "../util/logger"
 
 function initializeConnection() {
     function addDisconnectHandler(connection) {
@@ -27,37 +27,16 @@ function initializeConnection() {
     return connection
 }
 
-const conn = initializeConnection()
-
-module.exports = {
-    conn,
-
-    /**
-     * @typedef {Object} Result
-     * @property {number} id
-     * @property {Date} created_at
-     * @property {Date} updated_at
-     */
-    /**
-     * @typedef {Object} QueryResponse
-     * @property {Array.<Result>} results
-     * @property {Array.<any>} fields
-     */
-    /**
-     *
-     * @param  {...any} args
-     * @returns {Promise<QueryResponse>}
-     */
-    query(...args) {
-        logger("query").debug(...args)
-        const rst = new Promise((resolve, reject) => {
-            conn.query(...args, function(error, results, fields) {
-                if (error) {
-                    reject(error)
-                }
-                resolve({ results, fields })
-            })
+export const conn = initializeConnection()
+export function query(...args) {
+    logger("query").debug(...args)
+    const rst = new Promise((resolve, reject) => {
+        conn.query(...args, function(error, results, fields) {
+            if (error) {
+                reject(error)
+            }
+            resolve({ results, fields })
         })
-        return rst
-    },
+    })
+    return rst
 }

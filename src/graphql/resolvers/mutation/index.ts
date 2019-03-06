@@ -1,0 +1,5 @@
+export { mutation as register } from "./register"
+export { mutation as login } from "./login"
+export { mutation as updateProfile } from "./updateProfile"
+export { mutation as createSubject } from "./createSubject"
+export { mutation as createTopic } from "./createTopic"

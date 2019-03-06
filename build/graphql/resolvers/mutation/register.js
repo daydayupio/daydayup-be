@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -6,29 +7,35 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const UserModel = require('../../../models/user');
-const AuthorizationModel = require('../../../models/authorization');
-const jwt = require('../../../util/jwt');
-const pw = require('../../../util/password');
-const logger = require('../../../util/logger');
-module.exports = function (parent, { name, email, password }, context) {
+Object.defineProperty(exports, "__esModule", { value: true });
+const user_1 = require("../../../models/user");
+const authorization_1 = require("../../../models/authorization");
+const jwt = require("../../../util/jwt");
+const pw = require("../../../util/password");
+function mutation(parent, { name, email, password }, context) {
     return __awaiter(this, void 0, void 0, function* () {
         // judge repeat name
-        var { results } = yield UserModel.find({ name });
+        var { results } = yield user_1.UserModel.find({ name });
         if (results.length > 0) {
-            throw new Error('username is invalid');
+            throw new Error("username is invalid");
         }
         // insert record
-        yield UserModel.insert({ name, email, password: pw.encrypt(password), role_code: '3' });
-        const user = yield UserModel.validate({ name, password });
+        yield user_1.UserModel.insert({
+            name,
+            email,
+            password: pw.encrypt(password),
+            role_code: "3",
+        });
+        const user = yield user_1.UserModel.validate({ name, password });
         if (!user) {
-            throw new Error('register error');
+            throw new Error("register error");
         }
         // login
         const token = jwt.sign({ id: user.id, name: user.name });
         // authorization
-        AuthorizationModel.insert({ user_id: user.id, token });
+        authorization_1.AuthorizationModel.insert({ user_id: user.id, token });
         return token;
     });
-};
+}
+exports.mutation = mutation;
 //# sourceMappingURL=register.js.map

@@ -1,6 +1,6 @@
-const TopicModel = require('../../../models/topic')
+import { TopicModel } from "../../../models/topic"
 
-module.exports = async function (parent, {subjectName}, context) {
+export async function query(parent, { subjectName }, context) {
     const baseQuery = `
         SELECT
             topic.id,
@@ -24,9 +24,9 @@ module.exports = async function (parent, {subjectName}, context) {
         whereCondition = `WHERE subject.name = '${subjectName}'`
     }
     const query = baseQuery + whereCondition
-    const {results} = await TopicModel.query(query)
-    return results.map(({id, title, description, views, votes, stars, opinions, createdAt, updatedAt, creatorName, creatorEmail, subjectName}) => {
-        return {
+    const { results } = await TopicModel.query(query)
+    return results.map(
+        ({
             id,
             title,
             description,
@@ -36,13 +36,28 @@ module.exports = async function (parent, {subjectName}, context) {
             opinions,
             createdAt,
             updatedAt,
-            creator: {
-                name: creatorName,
-                email: creatorEmail,
-            },
-            subject: {
-                name: subjectName,
-            },
+            creatorName,
+            creatorEmail,
+            subjectName,
+        }) => {
+            return {
+                id,
+                title,
+                description,
+                views,
+                votes,
+                stars,
+                opinions,
+                createdAt,
+                updatedAt,
+                creator: {
+                    name: creatorName,
+                    email: creatorEmail,
+                },
+                subject: {
+                    name: subjectName,
+                },
+            }
         }
-    }) 
+    )
 }

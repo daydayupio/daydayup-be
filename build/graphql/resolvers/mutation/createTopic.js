@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -6,16 +7,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const { ApolloError } = require('apollo-server-express');
-const SubjectModel = require('../../../models/subject');
-const TopicModel = require('../../../models/topic');
-module.exports = function (parent, { title, description, subjectName }, { user }) {
+Object.defineProperty(exports, "__esModule", { value: true });
+const subject_1 = require("../../../models/subject");
+const topic_1 = require("../../../models/topic");
+function mutation(parent, { title, description, subjectName }, { user }) {
     return __awaiter(this, void 0, void 0, function* () {
         const { id: userId } = user;
-        var { results } = yield SubjectModel.find({ name: subjectName });
+        var { results } = yield subject_1.SubjectModel.find({ name: subjectName });
         const subjectId = results[0].id;
-        var { results } = yield TopicModel.insert({ title, description, subject_id: subjectId, creator_id: userId });
+        var { results } = yield topic_1.TopicModel.insert({
+            title,
+            description,
+            subject_id: subjectId,
+            creator_id: userId,
+        });
         return results.insertId;
     });
-};
+}
+exports.mutation = mutation;
 //# sourceMappingURL=createTopic.js.map

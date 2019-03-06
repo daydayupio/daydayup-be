@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -6,17 +7,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const SubjectModel = require('../../../models/subject');
-module.exports = function (parent, data, context) {
+Object.defineProperty(exports, "__esModule", { value: true });
+const subject_1 = require("../../../models/subject");
+function query(parent, data, context) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { results } = yield SubjectModel.query(`
-        SELECT 
-            subject.name, 
-            subject.description, 
-            user.name as creatorName, 
+        const { results } = yield subject_1.SubjectModel.query(`
+        SELECT
+            subject.name,
+            subject.description,
+            user.name as creatorName,
             user.email as creatorEmail
-        FROM subjects as subject 
-        JOIN users as user 
+        FROM subjects as subject
+        JOIN users as user
         ON subject.creator_id = user.id`);
         return results.map(({ name, description, creatorName, creatorEmail }) => {
             return {
@@ -25,9 +27,10 @@ module.exports = function (parent, data, context) {
                 creator: {
                     name: creatorName,
                     email: creatorEmail,
-                }
+                },
             };
         });
     });
-};
+}
+exports.query = query;
 //# sourceMappingURL=subject.js.map

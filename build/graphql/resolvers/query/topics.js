@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -6,8 +7,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const TopicModel = require('../../../models/topic');
-module.exports = function (parent, { subjectName }, context) {
+Object.defineProperty(exports, "__esModule", { value: true });
+const topic_1 = require("../../../models/topic");
+function query(parent, { subjectName }, context) {
     return __awaiter(this, void 0, void 0, function* () {
         const baseQuery = `
         SELECT
@@ -32,8 +34,8 @@ module.exports = function (parent, { subjectName }, context) {
             whereCondition = `WHERE subject.name = '${subjectName}'`;
         }
         const query = baseQuery + whereCondition;
-        const { results } = yield TopicModel.query(query);
-        return results.map(({ id, title, description, views, votes, stars, opinions, createdAt, updatedAt, creatorName, creatorEmail, subjectName }) => {
+        const { results } = yield topic_1.TopicModel.query(query);
+        return results.map(({ id, title, description, views, votes, stars, opinions, createdAt, updatedAt, creatorName, creatorEmail, subjectName, }) => {
             return {
                 id,
                 title,
@@ -54,5 +56,6 @@ module.exports = function (parent, { subjectName }, context) {
             };
         });
     });
-};
+}
+exports.query = query;
 //# sourceMappingURL=topics.js.map

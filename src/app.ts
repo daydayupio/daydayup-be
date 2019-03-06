@@ -1,10 +1,10 @@
-const express = require("express")
-const logger = require("./util/logger")
-const { ApolloServer, ApolloError } = require("apollo-server-express")
-const typeDefs = require("./graphql/schema")
-const resolvers = require("./graphql/resolvers")
-const AuthController = require("./controllers/auth")
-const ERROR_CODE = require("./config/errorCode")
+import * as express from "express"
+import { logger } from "./util/logger"
+import { ApolloServer, ApolloError } from "apollo-server-express"
+import { schema as typeDefs } from "./graphql/schema"
+import * as resolvers from "./graphql/resolvers"
+import { AuthController } from "./controllers/auth"
+import * as ERROR_CODE from "./config/errorCode"
 
 const server = new ApolloServer({
     typeDefs,

@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -6,12 +7,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const jwt = require('jsonwebtoken');
-const { ApolloError } = require('apollo-server-express');
-const { salt } = require('../config/jwt');
-const UserModel = require('../models/user');
-const ERROR_CODE = require('../config/errorCode');
-module.exports = class Auth {
+Object.defineProperty(exports, "__esModule", { value: true });
+const jwt = require("../util/jwt");
+const apollo_server_express_1 = require("apollo-server-express");
+const user_1 = require("../models/user");
+const ERROR_CODE = require("../config/errorCode");
+class AuthController {
     /**
      *
      * @param {object} payload
@@ -23,7 +24,7 @@ module.exports = class Auth {
     }
     static getUserByAuthorization(authorization) {
         return __awaiter(this, void 0, void 0, function* () {
-            const token = authorization.split(' ')[1];
+            const token = authorization.split(" ")[1];
             return yield this.getUserByToken(token);
         });
     }
@@ -34,20 +35,21 @@ module.exports = class Auth {
             }
             let user;
             try {
-                user = jwt.verify(token, salt);
+                user = jwt.verify(token);
             }
             catch (err) {
-                throw new ApolloError(ERROR_CODE.SESSION_EXPIRED.message, ERROR_CODE.SESSION_EXPIRED.code);
+                throw new apollo_server_express_1.ApolloError(ERROR_CODE.SESSION_EXPIRED.message, ERROR_CODE.SESSION_EXPIRED.code);
             }
             if (!user) {
                 return null;
             }
-            const valid = yield UserModel.isTokenValid({ userId: user.id, token });
+            const valid = yield user_1.UserModel.isTokenValid({ userId: user.id, token });
             if (!valid) {
                 return null;
             }
             return user;
         });
     }
-};
+}
+exports.AuthController = AuthController;
 //# sourceMappingURL=auth.js.map

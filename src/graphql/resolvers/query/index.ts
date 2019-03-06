@@ -1,0 +1,5 @@
+export { query as users } from "./users"
+export { query as subjects } from "./subject"
+export { query as profile } from "./profile"
+export { query as topics } from "./topics"
+export { query as topic } from "./topic"

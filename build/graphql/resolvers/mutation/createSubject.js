@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -6,17 +7,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const { ApolloError } = require('apollo-server-express');
-const SubjectModel = require('../../../models/subject');
-module.exports = function (parent, { name, description }, { user }) {
+Object.defineProperty(exports, "__esModule", { value: true });
+const apollo_server_express_1 = require("apollo-server-express");
+const subject_1 = require("../../../models/subject");
+function mutation(parent, { name, description }, { user }) {
     return __awaiter(this, void 0, void 0, function* () {
         const { id: userId } = user;
-        const { results } = yield SubjectModel.find({ name });
+        const { results } = yield subject_1.SubjectModel.find({ name });
         if (results.length > 0) {
-            throw new ApolloError('已有重复主题', '');
+            throw new apollo_server_express_1.ApolloError("已有重复主题", "");
         }
-        yield SubjectModel.insert({ name, description, creator_id: userId });
+        yield subject_1.SubjectModel.insert({ name, description, creator_id: userId });
         return name;
     });
-};
+}
+exports.mutation = mutation;
 //# sourceMappingURL=createSubject.js.map

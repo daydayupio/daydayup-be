@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const log4js = require("log4js");
 const loggerLevel = {
     query: "debug",
@@ -7,5 +9,5 @@ function logger(scope = "default") {
     logger.level = loggerLevel[scope] || "info";
     return logger;
 }
-module.exports = logger;
+exports.logger = logger;
 //# sourceMappingURL=logger.js.map

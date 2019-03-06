@@ -1,13 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const mysql = require("mysql");
 const mysqlConf = require("../config/database");
-const logger = require("../util/logger");
+const logger_1 = require("../util/logger");
 function initializeConnection() {
     function addDisconnectHandler(connection) {
         connection.on("error", function (error) {
             if (error instanceof Error) {
                 if (error.code === "PROTOCOL_CONNECTION_LOST") {
-                    logger("error")(error.stack);
-                    logger("error")("Lost connection. Reconnecting...");
+                    logger_1.logger("error")(error.stack);
+                    logger_1.logger("error")("Lost connection. Reconnecting...");
                     initializeConnection(connection.config);
                 }
                 else if (error.fatal) {
@@ -22,36 +24,18 @@ function initializeConnection() {
     connection.connect();
     return connection;
 }
-const conn = initializeConnection();
-module.exports = {
-    conn,
-    /**
-     * @typedef {Object} Result
-     * @property {number} id
-     * @property {Date} created_at
-     * @property {Date} updated_at
-     */
-    /**
-     * @typedef {Object} QueryResponse
-     * @property {Array.<Result>} results
-     * @property {Array.<any>} fields
-     */
-    /**
-     *
-     * @param  {...any} args
-     * @returns {Promise<QueryResponse>}
-     */
-    query(...args) {
-        logger("query").debug(...args);
-        const rst = new Promise((resolve, reject) => {
-            conn.query(...args, function (error, results, fields) {
-                if (error) {
-                    reject(error);
-                }
-                resolve({ results, fields });
-            });
+exports.conn = initializeConnection();
+function query(...args) {
+    logger_1.logger("query").debug(...args);
+    const rst = new Promise((resolve, reject) => {
+        exports.conn.query(...args, function (error, results, fields) {
+            if (error) {
+                reject(error);
+            }
+            resolve({ results, fields });
         });
-        return rst;
-    },
-};
+    });
+    return rst;
+}
+exports.query = query;
 //# sourceMappingURL=index.js.map

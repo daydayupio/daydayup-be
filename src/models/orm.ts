@@ -1,9 +1,13 @@
-const { query, conn } = require("../database")
-module.exports = class ORM {
+import { query, conn } from "../database"
+export class ORM {
+    protected static tableName: string
+    protected id: number
+    protected created_at: Date
+    protected updated_at: Date
     /**
      * @param {object} condition
      */
-    static async find(condition) {
+    static async find(condition?: object) {
         return query(this.findSQL(condition))
     }
 
@@ -40,7 +44,7 @@ module.exports = class ORM {
             condition
         )}`
     }
-    static insertSQL(condition) {
+    static insertSQL(condition = null) {
         const now = new Date()
         const conditions = Object.entries({
             ...condition,
@@ -68,7 +72,7 @@ module.exports = class ORM {
         )}`
     }
 
-    static whereClauseSQL(condition) {
+    static whereClauseSQL(condition?: object) {
         if (!condition) {
             return "1=1"
         }
@@ -81,22 +85,9 @@ module.exports = class ORM {
     }
 
     constructor() {
-        this.fields = [
-            {
-                id: {
-                    type: Number,
-                },
-                created_at: {
-                    type: Date,
-                },
-                updated_at: {
-                    type: Date,
-                },
-            },
-        ]
         this.id = null
-        this.createdAt = null
-        this.updatedAt = null
+        this.created_at = null
+        this.updated_at = null
     }
     async insert() {
         return query(ORM.insertSQL())

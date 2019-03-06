@@ -1,7 +1,7 @@
-module.exports = {
-    host: 'localhost',
-    user: 'root',
-    password: 'rootroot',
-    database: 'test',
-};
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.host = "localhost";
+exports.user = "root";
+exports.password = "rootroot";
+exports.database = "test";
 //# sourceMappingURL=database.js.map
