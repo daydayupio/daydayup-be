@@ -6,4 +6,13 @@ function tableName(name) {
     };
 }
 exports.tableName = tableName;
+function tableFields(fields) {
+    return function (target) {
+        target.tableFields = fields;
+        fields.forEach(it => {
+            target.prototype[it.name] = it.type;
+        });
+    };
+}
+exports.tableFields = tableFields;
 //# sourceMappingURL=decorator.js.map

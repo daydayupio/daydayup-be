@@ -8,6 +8,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 const orm_1 = require("./orm");
 const decorator_1 = require("./decorator");
+const fields = [
+    {
+        name: "id",
+        type: Number,
+    },
+    {
+        name: "user_id",
+        type: Number,
+    },
+    {
+        name: "token",
+        type: String,
+    },
+    {
+        name: "created_at",
+        type: Date,
+    },
+    {
+        name: "updated_at",
+        type: Date,
+    },
+];
 let AuthorizationModel = class AuthorizationModel extends orm_1.ORM {
     constructor({ user_id }) {
         super();
@@ -15,7 +37,8 @@ let AuthorizationModel = class AuthorizationModel extends orm_1.ORM {
     }
 };
 AuthorizationModel = __decorate([
-    decorator_1.tableName("authorizations")
+    decorator_1.tableName("authorizations"),
+    decorator_1.tableFields(fields)
 ], AuthorizationModel);
 exports.AuthorizationModel = AuthorizationModel;
 //# sourceMappingURL=authorization.js.map
