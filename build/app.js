@@ -41,5 +41,5 @@ const server = new apollo_server_express_1.ApolloServer({
 });
 const app = express();
 server.applyMiddleware({ app });
-app.listen({ port: 4000 }, () => logger_1.logger().debug(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`));
+app.listen({ port: 4000 }, () => logger_1.logger("query").debug(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`));
 //# sourceMappingURL=app.js.map
