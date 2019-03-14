@@ -91,13 +91,18 @@ class ORM {
         this.created_at = null;
         this.updated_at = null;
     }
-    insert() {
+    create() {
         return __awaiter(this, void 0, void 0, function* () {
-            return database_1.query(ORM.insertSQL());
+            return database_1.query(ORM.insertSQL(this.mergeCondition()));
         });
     }
     update() {
         return __awaiter(this, void 0, void 0, function* () { });
+    }
+    mergeCondition() {
+        return Object.assign({}, this.getCondition(), {
+            id: this.id,
+        });
     }
 }
 exports.ORM = ORM;

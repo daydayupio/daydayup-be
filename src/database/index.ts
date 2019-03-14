@@ -1,11 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const mysql = require("mysql");
-const mysqlConf = require("../config/database");
-const logger_1 = require("../util/logger");
+import * as mysql from "mysql";
+import * as mysqlConf from "../config/database";
+import { logger } from "../util/logger";
+
 function initializeConnection() {
     function addDisconnectHandler(connection) {
-        connection.on("error", function (error) {
+        connection.on("error", function(error) {
             // if (error instanceof Error) {
             //     if (error.code === "PROTOCOL_CONNECTION_LOST") {
             //         // logger("error")(error.stack);
@@ -17,17 +16,21 @@ function initializeConnection() {
             // }
         });
     }
+
     const connection = mysql.createConnection(mysqlConf);
+
     // Add handlers.
     addDisconnectHandler(connection);
+
     connection.connect();
     return connection;
 }
-exports.conn = initializeConnection();
-function query(sql) {
-    logger_1.logger("query").debug(sql);
+
+export const conn = initializeConnection();
+export function query(sql: string): Promise<{ results: any; fields: any }> {
+    logger("query").debug(sql);
     return new Promise((resolve, reject) => {
-        exports.conn.query(sql, function (error, results, fields) {
+        conn.query(sql, function(error, results, fields) {
             if (error) {
                 reject(error);
             }
@@ -35,5 +38,3 @@ function query(sql) {
         });
     });
 }
-exports.query = query;
-//# sourceMappingURL=index.js.map

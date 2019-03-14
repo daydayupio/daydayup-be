@@ -1,35 +1,19 @@
 import { ORM } from "./orm";
-import { tableName, tableFields } from "./decorator";
-
-const fields = [
-    {
-        name: "id",
-        type: Number,
-    },
-    {
-        name: "user_id",
-        type: Number,
-    },
-    {
-        name: "token",
-        type: String,
-    },
-    {
-        name: "created_at",
-        type: Date,
-    },
-    {
-        name: "updated_at",
-        type: Date,
-    },
-];
+import { tableName } from "./decorator";
 
 @tableName("authorizations")
-@tableFields(fields)
 export class AuthorizationModel extends ORM {
-    private user_id: number;
-    constructor({ user_id }) {
+    public token: string;
+    public user_id: number;
+    constructor(params: { user_id: number; token: string }) {
         super();
-        this.user_id = user_id;
+        this.user_id = params.user_id;
+        this.token = params.token;
+    }
+    protected getCondition(): Object {
+        return {
+            token: this.token,
+            user_id: this.user_id,
+        };
     }
 }

@@ -19,6 +19,13 @@ const pw = require("../util/password");
 const authorization_1 = require("./authorization");
 const decorator_1 = require("./decorator");
 let UserModel = class UserModel extends orm_1.ORM {
+    constructor(params) {
+        super();
+        this.name = params.name;
+        this.password = params.password;
+        this.email = params.email;
+        this.role_code = params.rule_code;
+    }
     static validate({ name, password }) {
         return __awaiter(this, void 0, void 0, function* () {
             const { results } = yield this.find({
@@ -50,6 +57,14 @@ let UserModel = class UserModel extends orm_1.ORM {
                 yield authorization_1.AuthorizationModel.update({ token }, { user_id: userId });
             }
         });
+    }
+    getCondition() {
+        return {
+            name: this.name,
+            password: this.password,
+            email: this.email,
+            role_code: this.role_code,
+        };
     }
 };
 UserModel = __decorate([

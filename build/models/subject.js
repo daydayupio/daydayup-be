@@ -9,6 +9,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const orm_1 = require("./orm");
 const { tableName } = require("./decorator");
 let SubjectModel = class SubjectModel extends orm_1.ORM {
+    constructor(params) {
+        super();
+        this.name = params.name;
+        this.description = params.description;
+        this.stars = params.stars;
+        this.creator_id = params.creator_id;
+    }
+    getCondition() {
+        return {
+            name: this.name,
+            description: this.description,
+            stars: this.stars,
+            creator_id: this.creator_id,
+        };
+    }
 };
 SubjectModel = __decorate([
     tableName("subjects")

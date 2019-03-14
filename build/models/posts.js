@@ -9,6 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const orm_1 = require("./orm");
 const { tableName } = require("./decorator.js");
 let PostModel = class PostModel extends orm_1.ORM {
+    getCondition() {
+        throw new Error("Method not implemented.");
+    }
 };
 PostModel = __decorate([
     tableName("posts")

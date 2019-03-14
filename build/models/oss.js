@@ -15,6 +15,12 @@ let OSSModel = class OSSModel extends orm_1.ORM {
         this.token = params.token || uuid();
         this.content = params.content;
     }
+    getCondition() {
+        return {
+            token: this.token,
+            content: this.content,
+        };
+    }
 };
 OSSModel = __decorate([
     decorator_1.tableName("oss")
