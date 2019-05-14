@@ -11,7 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const subject_1 = require("../../../models/subject");
 function query(parent, data, context) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { results } = yield subject_1.SubjectModel.query(`
+        const results = yield subject_1.SubjectModel.db.query(`
         SELECT
             subject.name,
             subject.description,

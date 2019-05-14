@@ -12,9 +12,9 @@ const topic_1 = require("../../../models/topic");
 function query(parent, { id }, context) {
     return __awaiter(this, void 0, void 0, function* () {
         // 更新浏览数
-        var { results } = yield topic_1.TopicModel.find({ id });
-        const views = results[0].views + 1;
-        yield topic_1.TopicModel.update({ views }, { id });
+        const result = yield topic_1.TopicModel.db.findById(id);
+        const views = result.views + 1;
+        yield topic_1.TopicModel.db.update({ views }, { id });
         const query = `
         SELECT
             topic.id,
@@ -24,8 +24,8 @@ function query(parent, { id }, context) {
             topic.votes,
             topic.stars,
             topic.opinions,
-            topic.created_at as createdAt,
-            topic.updated_at as updatedAt,
+            topic.created_at,
+            topic.updated_at,
             user.name as creatorName,
             user.email as creatorEmail,
             subject.name as subjectName
@@ -34,8 +34,8 @@ function query(parent, { id }, context) {
         JOIN subjects as subject ON topic.subject_id = subject.id
         WHERE topic.id = ${id}
     `;
-        var { results } = yield topic_1.TopicModel.query(query);
-        return results.map(({ id, title, description, views, votes, stars, opinions, createdAt, updatedAt, creatorName, creatorEmail, subjectName, }) => {
+        const results = yield topic_1.TopicModel.db.query(query);
+        return results.map(({ id, title, description, views, votes, stars, opinions, created_at, updated_at, creatorName, creatorEmail, subjectName, }) => {
             return {
                 id,
                 title,
@@ -44,8 +44,8 @@ function query(parent, { id }, context) {
                 votes,
                 stars,
                 opinions,
-                createdAt,
-                updatedAt,
+                createdAt: created_at,
+                updatedAt: updated_at,
                 creator: {
                     name: creatorName,
                     email: creatorEmail,

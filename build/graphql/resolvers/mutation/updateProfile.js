@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const jwt = require("../../../util/jwt");
 const user_1 = require("../../../models/user");
+const pw = require("../../../util/password");
 function mutation(parent, data, context) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!context.user) {
@@ -19,14 +20,14 @@ function mutation(parent, data, context) {
         const condition = {};
         Object.entries(data).forEach(([key, val]) => {
             condition[key] =
-                key === "password" ? user_1.UserModel.encryptPassword(val) : val;
+                key === "password" ? pw.encrypt(val) : val;
         });
-        yield user_1.UserModel.update(condition, { id: userId });
-        const { results } = yield user_1.UserModel.find({ id: userId });
+        yield user_1.UserModel.db.update(condition, { id: userId });
+        const results = yield user_1.UserModel.db.find({ id: userId });
         const user = results[0];
         context.user = { id: user.id, name: user.name };
         const token = jwt.sign({ id: user.id, name: user.name });
-        yield user_1.UserModel.updateToken({ userId: user.id, token });
+        yield user_1.UserModel.updateToken({ user_id: user.id, token });
         return token;
     });
 }

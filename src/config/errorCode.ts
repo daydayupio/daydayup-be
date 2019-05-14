@@ -10,3 +10,7 @@ export const INVALID_LOGIN = {
     code: "1002",
     message: "用户名或密码错误",
 }
+export const INVALID_USERNAME = {
+    code: "1003",
+    message: "该用户名已存在",
+}

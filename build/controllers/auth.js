@@ -43,7 +43,7 @@ class AuthController {
             if (!user) {
                 return null;
             }
-            const valid = yield user_1.UserModel.isTokenValid({ userId: user.id, token });
+            const valid = yield user_1.UserModel.isTokenValid({ user_id: user.id, token });
             if (!valid) {
                 return null;
             }

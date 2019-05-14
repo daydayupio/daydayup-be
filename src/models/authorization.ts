@@ -1,19 +1,23 @@
-import { ORM } from "./orm";
-import { tableName } from "./decorator";
+import { BaseModel, BaseDef } from "./baseModel";
+import { tableName } from "../util/decorators/model";
+
+export interface AuthorizationDef {
+    token: string
+    user_id: string
+}
 
 @tableName("authorizations")
-export class AuthorizationModel extends ORM {
+export class AuthorizationModel extends BaseModel<AuthorizationDef & BaseDef> {
+    static db = new AuthorizationModel()
+    static new(option?: Partial<AuthorizationDef>) {
+        return new AuthorizationModel(option)
+    }
+
     public token: string;
-    public user_id: number;
-    constructor(params: { user_id: number; token: string }) {
+    public user_id: string;
+    constructor(params: Partial<AuthorizationDef> = {}) {
         super();
         this.user_id = params.user_id;
         this.token = params.token;
-    }
-    protected getCondition(): Object {
-        return {
-            token: this.token,
-            user_id: this.user_id,
-        };
     }
 }

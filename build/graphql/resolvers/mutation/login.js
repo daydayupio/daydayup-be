@@ -18,9 +18,8 @@ function mutation(parent, { name, password }, context) {
         if (!user) {
             throw new apollo_server_express_1.ApolloError(ERROR_CODE.INVALID_LOGIN.message, ERROR_CODE.INVALID_LOGIN.code);
         }
-        const { id, name: userName } = user;
-        const token = jwt.sign({ id, name: userName });
-        yield user_1.UserModel.updateToken({ userId: id, token });
+        const token = jwt.sign({ id: user.id, name: user.name });
+        yield user_1.UserModel.updateToken({ user_id: user.id, token });
         return token;
     });
 }

@@ -33,7 +33,7 @@ export class AuthController {
         if (!user) {
             return null
         }
-        const valid = await UserModel.isTokenValid({ userId: user.id, token })
+        const valid = await UserModel.isTokenValid({ user_id: user.id, token })
         if (!valid) {
             return null
         }

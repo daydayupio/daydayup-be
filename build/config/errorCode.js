@@ -12,4 +12,8 @@ exports.INVALID_LOGIN = {
     code: "1002",
     message: "用户名或密码错误",
 };
+exports.INVALID_USERNAME = {
+    code: "1003",
+    message: "该用户名已存在",
+};
 //# sourceMappingURL=errorCode.js.map

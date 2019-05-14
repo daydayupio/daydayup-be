@@ -1,1 +1,1 @@
-{"version":3,"file":"decorator.js","sourceRoot":"","sources":["../../src/models/decorator.ts"],"names":[],"mappings":";;AAAA,SAAgB,SAAS,CAAC,IAAI;IAC1B,OAAO,UAAS,MAAM;QAClB,MAAM,CAAC,SAAS,GAAG,IAAI,CAAC;IAC5B,CAAC,CAAC;AACN,CAAC;AAJD,8BAIC"}
+{"version":3,"file":"decorator.js","sourceRoot":"","sources":["../../src/models/decorator.ts"],"names":[],"mappings":";;AACA,SAAgB,SAAS,CAAC,IAAY;IAClC,OAAO,UAAS,MAAW;QACvB,MAAM,CAAC,SAAS,GAAG,IAAI,CAAC;IAC5B,CAAC,CAAC;AACN,CAAC;AAJD,8BAIC"}

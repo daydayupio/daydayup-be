@@ -8,13 +8,13 @@ export async function mutation(
     { user }
 ) {
     const { id: userId } = user
-    var { results } = await SubjectModel.find({ name: subjectName })
+    const results = await SubjectModel.db.find({ name: subjectName })
     const subjectId = results[0].id
-    var { results } = await TopicModel.insert({
+    const model = await TopicModel.db.insert({
         title,
         description,
         subject_id: subjectId,
         creator_id: userId,
     })
-    return results.insertId
+    return model.insertId
 }

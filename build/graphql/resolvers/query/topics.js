@@ -20,8 +20,8 @@ function query(parent, { subjectName }, context) {
             topic.votes,
             topic.stars,
             topic.opinions,
-            topic.created_at as createdAt,
-            topic.updated_at as updatedAt,
+            topic.created_at,
+            topic.updated_at,
             user.name as creatorName,
             user.email as creatorEmail,
             subject.name as subjectName
@@ -34,8 +34,8 @@ function query(parent, { subjectName }, context) {
             whereCondition = `WHERE subject.name = '${subjectName}'`;
         }
         const query = baseQuery + whereCondition;
-        const { results } = yield topic_1.TopicModel.query(query);
-        return results.map(({ id, title, description, views, votes, stars, opinions, createdAt, updatedAt, creatorName, creatorEmail, subjectName, }) => {
+        const results = yield topic_1.TopicModel.db.query(query);
+        return results.map(({ id, title, description, views, votes, stars, opinions, created_at, updated_at, creatorName, creatorEmail, subjectName, }) => {
             return {
                 id,
                 title,
@@ -44,8 +44,8 @@ function query(parent, { subjectName }, context) {
                 votes,
                 stars,
                 opinions,
-                createdAt,
-                updatedAt,
+                createdAt: created_at,
+                updatedAt: updated_at,
                 creator: {
                     name: creatorName,
                     email: creatorEmail,

@@ -13,15 +13,15 @@ const topic_1 = require("../../../models/topic");
 function mutation(parent, { title, description, subjectName }, { user }) {
     return __awaiter(this, void 0, void 0, function* () {
         const { id: userId } = user;
-        var { results } = yield subject_1.SubjectModel.find({ name: subjectName });
+        const results = yield subject_1.SubjectModel.db.find({ name: subjectName });
         const subjectId = results[0].id;
-        var { results } = yield topic_1.TopicModel.insert({
+        const model = yield topic_1.TopicModel.db.insert({
             title,
             description,
             subject_id: subjectId,
             creator_id: userId,
         });
-        return results.insertId;
+        return model.insertId;
     });
 }
 exports.mutation = mutation;

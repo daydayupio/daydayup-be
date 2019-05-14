@@ -4,7 +4,7 @@ import { logger } from "../util/logger";
 
 function initializeConnection() {
     function addDisconnectHandler(connection) {
-        connection.on("error", function(error) {
+        connection.on("error", function (error) {
             // if (error instanceof Error) {
             //     if (error.code === "PROTOCOL_CONNECTION_LOST") {
             //         // logger("error")(error.stack);
@@ -27,14 +27,34 @@ function initializeConnection() {
 }
 
 export const conn = initializeConnection();
-export function query(sql: string): Promise<{ results: any; fields: any }> {
+export interface QueryResult<T> {
+    results: T
+    fields: mysql.FieldInfo
+}
+export function query<T>(sql: string): Promise<QueryResult<T>> {
     logger("query").debug(sql);
     return new Promise((resolve, reject) => {
-        conn.query(sql, function(error, results, fields) {
+        conn.query(sql, function (error, results: T, fields: mysql.FieldInfo) {
             if (error) {
                 reject(error);
             }
             resolve({ results, fields });
         });
     });
+}
+
+export async function queryResult<T>(sql: string) {
+    return (await query<T[]>(sql)).results
+}
+
+export async function insertResult(sql: string) {
+    return (await query<{ insertId: number, affectedRows: number }>(sql)).results
+}
+
+export async function updateResult(sql: string) {
+    return (await query<{ affectedRows: number, changedRows: number }>(sql)).results
+}
+
+export async function deleteResult(sql: string) {
+    return (await query<{ affectedRows: number }>(sql)).results
 }

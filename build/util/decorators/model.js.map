@@ -1,0 +1,1 @@
+{"version":3,"file":"model.js","sourceRoot":"","sources":["../../../src/util/decorators/model.ts"],"names":[],"mappings":";;AAAA,SAAgB,SAAS,CAAC,IAAY;IAClC,OAAO,UAAU,MAAW;QACxB,MAAM,CAAC,SAAS,GAAG,IAAI,CAAC;QACxB,MAAM,CAAC,SAAS,CAAC,SAAS,GAAG,GAAG,EAAE,CAAC,IAAI,CAAA;IAC3C,CAAC,CAAC;AACN,CAAC;AALD,8BAKC"}

@@ -1,7 +1,7 @@
 import { SubjectModel } from "../../../models/subject"
 
 export async function query(parent, data, context) {
-    const { results } = await SubjectModel.query(`
+    const results = await SubjectModel.db.query(`
         SELECT
             subject.name,
             subject.description,

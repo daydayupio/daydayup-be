@@ -6,24 +6,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const orm_1 = require("./orm");
+var OSSModel_1;
+const baseModel_1 = require("./baseModel");
 const uuid = require("uuid/v1");
-const decorator_1 = require("./decorator");
-let OSSModel = class OSSModel extends orm_1.ORM {
-    constructor(params) {
+const model_1 = require("../util/decorators/model");
+let OSSModel = OSSModel_1 = class OSSModel extends baseModel_1.BaseModel {
+    constructor(params = {}) {
         super();
         this.token = params.token || uuid();
         this.content = params.content;
     }
-    getCondition() {
-        return {
-            token: this.token,
-            content: this.content,
-        };
+    static new(option) {
+        return new OSSModel_1(option);
     }
 };
-OSSModel = __decorate([
-    decorator_1.tableName("oss")
+OSSModel = OSSModel_1 = __decorate([
+    model_1.tableName("oss")
 ], OSSModel);
 exports.OSSModel = OSSModel;
 //# sourceMappingURL=oss.js.map

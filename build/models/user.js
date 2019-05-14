@@ -14,61 +14,52 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const orm_1 = require("./orm");
+var UserModel_1;
+const baseModel_1 = require("./baseModel");
 const pw = require("../util/password");
 const authorization_1 = require("./authorization");
-const decorator_1 = require("./decorator");
-let UserModel = class UserModel extends orm_1.ORM {
-    constructor(params) {
+const model_1 = require("../util/decorators/model");
+let UserModel = UserModel_1 = class UserModel extends baseModel_1.BaseModel {
+    constructor(params = {}) {
         super();
         this.name = params.name;
         this.password = params.password;
         this.email = params.email;
-        this.role_code = params.rule_code;
+        this.role_code = params.role_code;
     }
+    static new(option) {
+        return new UserModel_1(option);
+    }
+    /** 查询符合对应条件的 user */
     static validate({ name, password }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { results } = yield this.find({
+            const results = yield UserModel_1.db.find({
                 name,
                 password: pw.encrypt(password),
             });
             return results[0];
         });
     }
-    static isTokenValid({ userId, token }) {
+    /** 查询 token 是否有效 */
+    static isTokenValid({ user_id, token }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { results } = yield authorization_1.AuthorizationModel.find({
-                user_id: userId,
+            const results = yield authorization_1.AuthorizationModel.db.find({
+                user_id,
                 token,
             });
             return results.length > 0;
         });
     }
-    static encryptPassword(password) {
-        return pw.encrypt(password);
-    }
-    static updateToken({ userId, token }) {
+    /** 更新 token */
+    static updateToken({ user_id, token }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { results } = yield authorization_1.AuthorizationModel.find({ user_id: userId });
-            if (results.length === 0) {
-                yield authorization_1.AuthorizationModel.insert({ user_id: userId, token });
-            }
-            else {
-                yield authorization_1.AuthorizationModel.update({ token }, { user_id: userId });
-            }
+            yield authorization_1.AuthorizationModel.db.insertOrUpdate({ token }, { user_id });
         });
     }
-    getCondition() {
-        return {
-            name: this.name,
-            password: this.password,
-            email: this.email,
-            role_code: this.role_code,
-        };
-    }
 };
-UserModel = __decorate([
-    decorator_1.tableName("users")
+UserModel.db = new UserModel_1();
+UserModel = UserModel_1 = __decorate([
+    model_1.tableName("users")
 ], UserModel);
 exports.UserModel = UserModel;
 //# sourceMappingURL=user.js.map

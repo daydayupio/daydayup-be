@@ -10,8 +10,8 @@ export async function query(parent, { subjectName }, context) {
             topic.votes,
             topic.stars,
             topic.opinions,
-            topic.created_at as createdAt,
-            topic.updated_at as updatedAt,
+            topic.created_at,
+            topic.updated_at,
             user.name as creatorName,
             user.email as creatorEmail,
             subject.name as subjectName
@@ -24,7 +24,7 @@ export async function query(parent, { subjectName }, context) {
         whereCondition = `WHERE subject.name = '${subjectName}'`
     }
     const query = baseQuery + whereCondition
-    const { results } = await TopicModel.query(query)
+    const results = await TopicModel.db.query(query)
     return results.map(
         ({
             id,
@@ -34,8 +34,8 @@ export async function query(parent, { subjectName }, context) {
             votes,
             stars,
             opinions,
-            createdAt,
-            updatedAt,
+            created_at,
+            updated_at,
             creatorName,
             creatorEmail,
             subjectName,
@@ -48,8 +48,8 @@ export async function query(parent, { subjectName }, context) {
                 votes,
                 stars,
                 opinions,
-                createdAt,
-                updatedAt,
+                createdAt: created_at,
+                updatedAt: updated_at,
                 creator: {
                     name: creatorName,
                     email: creatorEmail,

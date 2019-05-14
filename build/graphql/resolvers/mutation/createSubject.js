@@ -13,11 +13,11 @@ const subject_1 = require("../../../models/subject");
 function mutation(parent, { name, description }, { user }) {
     return __awaiter(this, void 0, void 0, function* () {
         const { id: userId } = user;
-        const { results } = yield subject_1.SubjectModel.find({ name });
+        const results = yield subject_1.SubjectModel.db.find({ name });
         if (results.length > 0) {
             throw new apollo_server_express_1.ApolloError("已有重复主题", "");
         }
-        yield subject_1.SubjectModel.insert({ name, description, creator_id: userId });
+        yield subject_1.SubjectModel.db.insert({ name, description, creator_id: userId });
         return name;
     });
 }

@@ -11,10 +11,9 @@ export async function mutation(parent, { name, password }, context) {
             ERROR_CODE.INVALID_LOGIN.code
         )
     }
-    const { id, name: userName } = user
-    const token = jwt.sign({ id, name: userName })
+    const token = jwt.sign({ id: user.id, name: user.name })
 
-    await UserModel.updateToken({ userId: id, token })
+    await UserModel.updateToken({ user_id: user.id, token })
 
     return token
 }

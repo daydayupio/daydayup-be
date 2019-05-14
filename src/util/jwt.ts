@@ -4,10 +4,16 @@ const defaultOptions = {
     expiresIn,
 }
 
-export function sign(payload, options?) {
+export interface signPayload {
+    id?: string
+    name: string
+}
+
+export function sign(payload: signPayload, options?: jwt.SignOptions) {
     const newOptions = Object.assign({}, defaultOptions, options)
     return jwt.sign(payload, salt, newOptions)
 }
-export function verify(token) {
+
+export function verify(token: string) {
     return jwt.verify(token, salt)
 }

@@ -1,8 +1,33 @@
-import { ORM } from "./orm";
-const { tableName } = require("./decorator");
+import { BaseModel, BaseDef } from "./baseModel";
+import { tableName } from "../util/decorators/model";
+
+export interface TopicDef {
+    /** 标题 */
+    title: string
+    /** 描述 */
+    description: string
+    /** 浏览数 */
+    views: number
+    /** 投票数 */
+    votes: number
+    /** 收藏数 */
+    stars: number
+    /** 观点数 */
+    opinions: number
+    /** 是否归档 */
+    archived: boolean
+    /** 创建者 ID */
+    creator_id: string
+    /** 所属栏目 ID */
+    subject_id: string
+}
 
 @tableName("topics")
-export class TopicModel extends ORM {
+export class TopicModel extends BaseModel<TopicDef & BaseDef> {
+    static db = new TopicModel()
+    static new(option?: Partial<TopicDef>) {
+        return new TopicModel(option)
+    }
     public title: string;
     public description: string;
     public views: number;
@@ -10,19 +35,10 @@ export class TopicModel extends ORM {
     public stars: number;
     public opinions: number;
     public archived: boolean;
-    public creator_id: number;
-    public subject_id: number;
-    constructor(params: {
-        title: string;
-        description: string;
-        views: number;
-        votes: number;
-        stars: number;
-        opinions: number;
-        archived: boolean;
-        creator_id: number;
-        subject_id: number;
-    }) {
+    public creator_id: string;
+    public subject_id: string;
+
+    constructor(params: Partial<TopicDef> = {}) {
         super();
         this.title = params.title;
         this.description = params.description;
@@ -34,17 +50,6 @@ export class TopicModel extends ORM {
         this.creator_id = params.creator_id;
         this.subject_id = params.subject_id;
     }
-    protected getCondition(): Object {
-        return {
-            title: this.title,
-            description: this.description,
-            views: this.views,
-            votes: this.votes,
-            stars: this.stars,
-            opinions: this.opinions,
-            archived: this.archived,
-            creator_id: this.creator_id,
-            subject_id: this.subject_id,
-        };
-    }
 }
+
+TopicModel.prototype.opinions

@@ -6,15 +6,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const orm_1 = require("./orm");
-const { tableName } = require("./decorator.js");
-let PostModel = class PostModel extends orm_1.ORM {
-    getCondition() {
-        throw new Error("Method not implemented.");
+var PostModel_1;
+const baseModel_1 = require("./baseModel");
+const model_1 = require("../util/decorators/model");
+let PostModel = PostModel_1 = class PostModel extends baseModel_1.BaseModel {
+    constructor(_option = {}) {
+        super();
+    }
+    static new(option) {
+        return new PostModel_1(option);
     }
 };
-PostModel = __decorate([
-    tableName("posts")
+PostModel.db = new PostModel_1();
+PostModel = PostModel_1 = __decorate([
+    model_1.tableName("posts")
 ], PostModel);
 exports.PostModel = PostModel;
 //# sourceMappingURL=posts.js.map

@@ -11,7 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = require("../../../models/user");
 function query(parent, data, context) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { results } = yield user_1.UserModel.findAll();
+        const results = yield user_1.UserModel.db.findAll();
         return results;
     });
 }

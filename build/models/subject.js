@@ -6,27 +6,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const orm_1 = require("./orm");
-const { tableName } = require("./decorator");
-let SubjectModel = class SubjectModel extends orm_1.ORM {
-    constructor(params) {
+var SubjectModel_1;
+const baseModel_1 = require("./baseModel");
+const model_1 = require("../util/decorators/model");
+let SubjectModel = SubjectModel_1 = class SubjectModel extends baseModel_1.BaseModel {
+    constructor(params = {}) {
         super();
         this.name = params.name;
         this.description = params.description;
         this.stars = params.stars;
         this.creator_id = params.creator_id;
     }
-    getCondition() {
-        return {
-            name: this.name,
-            description: this.description,
-            stars: this.stars,
-            creator_id: this.creator_id,
-        };
+    static new(option) {
+        return new SubjectModel_1(option);
     }
 };
-SubjectModel = __decorate([
-    tableName("subjects")
+SubjectModel.db = new SubjectModel_1();
+SubjectModel = SubjectModel_1 = __decorate([
+    model_1.tableName("subjects")
 ], SubjectModel);
 exports.SubjectModel = SubjectModel;
 //# sourceMappingURL=subject.js.map

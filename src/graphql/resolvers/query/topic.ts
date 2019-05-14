@@ -2,9 +2,9 @@ import { TopicModel } from "../../../models/topic"
 
 export async function query(parent, { id }, context) {
     // 更新浏览数
-    var { results } = await TopicModel.find({ id })
-    const views = results[0].views + 1
-    await TopicModel.update({ views }, { id })
+    const result = await TopicModel.db.findById(id)
+    const views = result.views + 1
+    await TopicModel.db.update({ views }, { id })
 
     const query = `
         SELECT
@@ -15,8 +15,8 @@ export async function query(parent, { id }, context) {
             topic.votes,
             topic.stars,
             topic.opinions,
-            topic.created_at as createdAt,
-            topic.updated_at as updatedAt,
+            topic.created_at,
+            topic.updated_at,
             user.name as creatorName,
             user.email as creatorEmail,
             subject.name as subjectName
@@ -25,7 +25,7 @@ export async function query(parent, { id }, context) {
         JOIN subjects as subject ON topic.subject_id = subject.id
         WHERE topic.id = ${id}
     `
-    var { results } = await TopicModel.query(query)
+    const results = await TopicModel.db.query(query)
     return results.map(
         ({
             id,
@@ -35,8 +35,8 @@ export async function query(parent, { id }, context) {
             votes,
             stars,
             opinions,
-            createdAt,
-            updatedAt,
+            created_at,
+            updated_at,
             creatorName,
             creatorEmail,
             subjectName,
@@ -49,8 +49,8 @@ export async function query(parent, { id }, context) {
                 votes,
                 stars,
                 opinions,
-                createdAt,
-                updatedAt,
+                createdAt: created_at,
+                updatedAt: updated_at,
                 creator: {
                     name: creatorName,
                     email: creatorEmail,

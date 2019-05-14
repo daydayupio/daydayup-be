@@ -1,5 +1,6 @@
 import * as jwt from "../../../util/jwt"
 import { UserModel } from "../../../models/user"
+import * as pw from "../../../util/password";
 export async function mutation(parent, data, context) {
     if (!context.user) {
         throw new Error("not login")
@@ -10,13 +11,13 @@ export async function mutation(parent, data, context) {
     const condition = {}
     Object.entries(data).forEach(([key, val]) => {
         condition[key] =
-            key === "password" ? UserModel.encryptPassword(val) : val
+            key === "password" ? pw.encrypt(val as string) : val
     })
-    await UserModel.update(condition, { id: userId })
-    const { results } = await UserModel.find({ id: userId })
+    await UserModel.db.update(condition, { id: userId })
+    const results = await UserModel.db.find({ id: userId })
     const user = results[0]
     context.user = { id: user.id, name: user.name }
     const token = jwt.sign({ id: user.id, name: user.name })
-    await UserModel.updateToken({ userId: user.id, token })
+    await UserModel.updateToken({ user_id: user.id, token })
     return token
 }
