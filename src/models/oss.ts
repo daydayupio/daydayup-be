@@ -9,6 +9,7 @@ export interface OSSDef {
 
 @tableName("oss")
 export class OSSModel extends BaseModel<Partial<OSSDef & BaseDef>> {
+    static db = new OSSModel()
     static new(option?: Partial<OSSDef>) {
         return new OSSModel(option)
     }

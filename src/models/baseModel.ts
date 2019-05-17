@@ -74,10 +74,6 @@ export abstract class BaseModel<Def> {
     }
 }
 
-
-
-
-
 /** 构造 sql 查询语句 */
 function findSQL<T>(tableName: string, condition: T) {
     return `SELECT * FROM ${tableName} WHERE ${whereClauseSQL(
